@@ -13,3 +13,4 @@ public interface MemDao {
 	int updateMem(MemDto dto);
 	int deleteMem(String id);
 }
+

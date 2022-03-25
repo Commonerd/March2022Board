@@ -7,7 +7,7 @@
 <body>
 <h3>회원 가입을 환영합니다.</h3>
 <form action="insert" method="post" id="joinform">
-<input type="hidden" name="_method" value="put">
+<input type="hidden" name="_method">
 	<table>
 		<tr><td>id</td><td><input name="id" id="id">
 				<input type="button" id="id_check" value="중복 확인"><span id="id_msg"></span></td></tr>

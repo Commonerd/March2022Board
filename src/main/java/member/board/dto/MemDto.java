@@ -12,14 +12,15 @@ import lombok.Data;
 @Data
 public class MemDto {
 	
-	@NotNull(message="writer is null.")
-	@NotEmpty(message="writer is empty.")
+	@NotNull(message="id is null.")
+	@NotEmpty(message="id is empty.")
 	private String id;
-	@NotNull(message="writer is null.")
+	@NotNull(message="id is null.")
 	private String password;
 	private String name;
 	@DateTimeFormat(pattern ="yyyyMMdd")
 	private Date birth;
 	private String address;
-	
+		
 }
+

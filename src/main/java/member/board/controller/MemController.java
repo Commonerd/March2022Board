@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class MemController {
 		return new MemDto();
 	}
 	
-	@GetMapping("/joinform")
+	@GetMapping("/insert")
 	public String joinform() {
 		return "mem/joinform";
 	}
@@ -40,7 +41,7 @@ public class MemController {
 		return checkid;
 	}
 	
-	@PutMapping("/insert")
+	@PostMapping("/insert")
 	public String insert(MemDto dto) {
 		service.insertMem(dto);
 		return "redirect:loginform";
@@ -71,26 +72,34 @@ public class MemController {
 	public String updateform(@ModelAttribute("user") MemDto dto) {
 		return "mem/updateform";
 	}
-	@PostMapping("/update")
+	@PutMapping("/updateform")
 	public String update(@ModelAttribute("user") MemDto dto) {
 		service.updateMem(dto);
 		return "redirect:/main";
 	}
-	@GetMapping("/deleteform")
-	public String deleteform() {
+	
+	/*
+	 * @GetMapping("/delete") public String deleteform() { return "mem/deleteform";
+	 * }
+	 */
+	@GetMapping("/deleteform/wrongpw")
+	public String deleteformError(Model m) {
+		m.addAttribute("error", "비밀번호 틀림");
 		return "mem/deleteform";
 	}
-	@PostMapping("/delete")
+	
+	@DeleteMapping("/deleteform")
 	public String delete(String formpw, @ModelAttribute("user") MemDto dto, SessionStatus status) {
 	
 		int i = service.deleteMem(formpw, dto);
 		if(i == 0) {
-			return "mem/deleteform";
+			return "redirect:/deleteform/wrongpw";
 		}else {
 			status.setComplete();
-			return "redirect:/";
+			return "redirect:/main";
 		}
 	}
+
 	@RequestMapping("/main")
 	public String main(@ModelAttribute("user") MemDto dto) {
 		if(dto.getId() != null) {

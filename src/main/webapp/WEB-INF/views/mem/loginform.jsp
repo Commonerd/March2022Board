@@ -21,7 +21,7 @@
 	<tr>
 		<td colspan="2" align="center">
 			<input type="submit" value="로그인">
-			<a href="joinform">회원 가입</a>
+			<a href="/insert">회원 가입</a>
 		</td>  
 	</tr>
 </table>

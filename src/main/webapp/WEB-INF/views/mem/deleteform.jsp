@@ -6,7 +6,8 @@
 </head>
 <body>
 <h3> 회원 탈퇴하려면 비밀번호를 입력해주세요</h3>
-<form method="post" onsubmit="checkVal()" action="delete">
+<form method="post" onsubmit="return checkVal()" action="delete">
+<input type="hidden" name="_method" value="delete">
 	<table><tr><td>password</td>
 	<td><input type="password" name="formpw" id="password"></td></tr>
 	<tr><td colspan="2"><input type="submit" value="탈퇴" ></td></tr>

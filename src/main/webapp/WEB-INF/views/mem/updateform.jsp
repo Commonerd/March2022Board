@@ -20,7 +20,7 @@
 		<tr><td>address</td><td><input name="address" id="address" value="${user.address}">
 					<input type="button" id="addbtn" value="우편번호 검색" onclick="addPost()"></td></tr>
 	
-		<tr><td colspan="2"><input type="submit" value="가입"></td></tr>
+		<tr><td colspan="2"><input type="submit" value="수정"></td></tr>
 	</table>
 </form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
