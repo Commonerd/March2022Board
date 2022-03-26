@@ -68,32 +68,34 @@ public class MemController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/updateform")
+	@GetMapping("/update")
 	public String updateform(@ModelAttribute("user") MemDto dto) {
 		return "mem/updateform";
 	}
-	@PutMapping("/updateform")
+	@PutMapping("/update")
 	public String update(@ModelAttribute("user") MemDto dto) {
 		service.updateMem(dto);
 		return "redirect:/main";
 	}
 	
-	/*
-	 * @GetMapping("/delete") public String deleteform() { return "mem/deleteform";
-	 * }
-	 */
-	@GetMapping("/deleteform/wrongpw")
+	
+	@GetMapping("/delete") 
+	public String deleteform() { 
+		return "mem/deleteform";
+	  }
+	 
+	@GetMapping("/delete/wrongpw")
 	public String deleteformError(Model m) {
 		m.addAttribute("error", "비밀번호 틀림");
 		return "mem/deleteform";
 	}
 	
-	@DeleteMapping("/deleteform")
+	@DeleteMapping("/delete")
 	public String delete(String formpw, @ModelAttribute("user") MemDto dto, SessionStatus status) {
 	
 		int i = service.deleteMem(formpw, dto);
 		if(i == 0) {
-			return "redirect:/deleteform/wrongpw";
+			return "redirect:/delete/wrongpw";
 		}else {
 			status.setComplete();
 			return "redirect:/main";

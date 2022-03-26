@@ -13,3 +13,4 @@ public class BoardDto {
 	private Date regdate;
 	private int readcount;
 }
+

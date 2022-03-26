@@ -40,7 +40,7 @@ public class BoardController {
 	@PostMapping("/board/write")
 	public String write(BoardDto dto) {
 		service.insert(dto);
-		return "redirect:board/list";// 글목록
+		return "redirect:/board/list";// 글목록
 	}
 	//요청 page 번호를 받아서 페이지에 맞는 글을 갯수에 맞게 꺼내옴
 	//전체 글 갯수에 맞춰 페이징 처리
