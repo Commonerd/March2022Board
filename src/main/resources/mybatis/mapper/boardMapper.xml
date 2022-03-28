@@ -24,5 +24,6 @@ update board set title=#{title}, content=#{content} where no=#{no} </update>
 </select>
 
 <select id="count" resultType="int"> select count(*) from board </select>
-<select parameterType="int" id="boardOne" resultType="member.board.dto.BoardDto"> select * from board where no = #{no} </select>
+<select parameterType="int" id="boardOne" resultType="member.board.dto.BoardDto"> 
+select * from board where no = #{no} </select>
 </mapper>

@@ -12,5 +12,6 @@ public class BoardDto {
 	private String content;
 	private Date regdate;
 	private int readcount;
+	
 }
 
