@@ -10,6 +10,9 @@ insert into board(no, id,title, content, regdate) values(b_seq.nextval, #{id}, #
 <update parameterType="member.board.dto.BoardDto" id="updateBoard"> 
 update board set title=#{title}, content=#{content} where no=#{no} </update>
 
+<update id="addReadcount" parameterType="int">
+	update board set readcount = readcount + 1 where no = #{no} </update>
+	
 <delete parameterType="int" id="deleteBoard"> delete from board where no = #{no} </delete>
 
 <select parameterType="map" id="boardList" resultType="member.board.dto.BoardDto">
@@ -26,4 +29,37 @@ update board set title=#{title}, content=#{content} where no=#{no} </update>
 <select id="count" resultType="int"> select count(*) from board </select>
 <select parameterType="int" id="boardOne" resultType="member.board.dto.BoardDto"> 
 select * from board where no = #{no} </select>
+
+<select id="countSearch" resultType="int" parameterType="map">
+		select count(*) from board 
+		<where>
+			<choose>
+				<when test="searchn == 0">
+				title  like '%'||#{search}||'%' </when>
+				<when test="searchn == 1"> content  like '%'||#{search}||'%'</when>
+				<when test="searchn == 2"> id  like '%'||#{search}||'%' </when>
+			</choose>
+		</where> 
+</select>
+
+<select id="boardListSearch" parameterType="map" resultType="member.board.dto.BoardDto">
+		
+		select * from
+		(select no, id,title, content, regdate, readcount, rownum r
+		from (select * from board order by regdate desc) 
+		<where>
+			<choose>
+				<when test="searchn == 0">
+				title like '%'||#{search}||'%'</when>
+				<when test="searchn == 1"> content like '%'||#{search}||'%' </when>
+				<when test="searchn == 2"> id like '%'||#{search}||'%' </when>
+			</choose>
+		</where> 
+		order by regdate desc 
+		
+		) where r >= #{start} AND r &lt;= #{end}
+ 		
+</select>
+
+
 </mapper>

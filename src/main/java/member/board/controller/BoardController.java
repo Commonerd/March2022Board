@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import member.board.dto.BoardDto;
+import member.board.dto.CommDto;
 import member.board.dto.MemDto;
 import member.board.service.BoardService;
+import member.board.service.CommService;
 
 @SessionAttributes("user")
 @Controller
@@ -76,10 +78,15 @@ public class BoardController {
 		return "board/list";
 	}
 	
+	@Autowired
+	CommService c_service;
+	
 	@GetMapping("board/content/{no}")
-	public String content(@ModelAttribute("user")MemDto user, @PathVariable int no, Model m) {
+	public String content(@PathVariable int no, Model m) {
 		BoardDto dto = service.boardOne(no);
 		m.addAttribute("dto", dto);
+		List<CommDto> cList = c_service.selectComm(no);
+		m.addAttribute("cList", cList);
 		return "board/content";
 	}
 	
@@ -102,4 +109,40 @@ public class BoardController {
 		int i = service.deleteBoard(no); 
 		return ""+i;
 	}
+	
+	@GetMapping("/board/search")
+	public String search(int searchn, String search,@RequestParam(name="p", defaultValue = "1") int page, Model m) {
+		int count = service.countSearch(searchn,search);
+		if(count > 0) {
+		
+		int perPage = 10; // 한 페이지에 보일 글의 갯수
+		int startRow = (page - 1) * perPage + 1;
+		int endRow = page * perPage;
+		
+		List<BoardDto> boardList = service.boardListSearch(searchn,search,startRow, endRow);
+		m.addAttribute("bList", boardList);
+
+		int pageNum = 5;
+		int totalPages = count / perPage + (count % perPage > 0 ? 1 : 0); //전체 페이지 수
+		
+		int begin = (page - 1) / pageNum * pageNum + 1;
+		int end = begin + pageNum -1;
+		if(end > totalPages) {
+			end = totalPages;
+		}
+		 m.addAttribute("begin", begin);
+		 m.addAttribute("end", end);
+		 m.addAttribute("pageNum", pageNum);
+		 m.addAttribute("totalPages", totalPages);
+		
+		}
+		m.addAttribute("count", count);
+		m.addAttribute("searchn", searchn);
+		m.addAttribute("search", search);
+		
+		return "board/search";
+	}
+	
+
+	
 }

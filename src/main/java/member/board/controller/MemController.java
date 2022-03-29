@@ -30,6 +30,11 @@ public class MemController {
 		return new MemDto();
 	}
 	
+	@GetMapping("/joinView")
+	public String View() {
+		return "member/joinView";
+	}
+	
 	@GetMapping("/insert")
 	public String joinform() {
 		return "mem/joinform";

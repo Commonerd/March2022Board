@@ -76,18 +76,16 @@ a {
 </c:if>
 
 	</div>
-		<form action="freeList" method="post">
-			<div class="search-wrap">
-			<select class="search-select" name="searchType">
-				<option value="title">제목</option>
-				<option value="content">내용</option>
-				<option value="id">작성자</option>
-			</select>
-			<input type="text" class="search-select" name="searchName">
-		</form>
-	</div>
-	
-	<input type="hidden" name="pageNum" value="1">
-	<input type="hidden" name="amount" value="10">
+		<div id="search" align="center">
+<form action="search">
+<select name="searchn">
+<option value="0">제목</option>
+<option value="1">내용</option>
+<option value="2">작성자</option>
+</select>
+<input type="text" name="search" size="15" maxlength="50" /> 
+<input type="submit" value="검색" />
+</form>	
+</div>
 </body>
 </html>
