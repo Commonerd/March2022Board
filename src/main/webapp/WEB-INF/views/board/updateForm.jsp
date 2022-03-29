@@ -2,7 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insert title here</title>
+<title>글 수정</title>
+<style>
+	.orange{background-color: orange; width: 50px;}
+	table{border-collapse : collapse; width: 800px;}
+</style>
 </head>
 <body>
 <form method="post" id="updateform" action="/board/update" >
@@ -20,15 +24,45 @@
 		</tr>
 		<tr>
 			<td class="orange">내용</td>
-			<td><textarea name="content" cols="40" rows="10">${dto.content}</textarea></td>
+			<td><div id="smarteditor">
+        	<textarea name="content" id="editorTxt" 
+                  rows="20" cols="10" 
+                  style="width: 100%"></textarea></div></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<input type="submit" value="글 수정 완료"> 
+				<input type="button" id="save" value="글 수정 완료"> 
 			</td>
 		</tr>
 	</table>
 
 </form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+<script>
+    let oEditors = []
+
+    smartEditor = function() {
+      nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "editorTxt",
+        sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+        fOnAppLoad : function(){
+            oEditors.getById["editorTxt"].exec("PASTE_HTML", ['${dto.content}']);
+        },
+        fCreator: "createSEditor2"
+      })
+    }
+
+    $(document).ready(function() {
+      smartEditor() 
+      
+      $("#save").click(function(){
+    	  oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+    	  $("#updateform").submit();
+      });
+      
+    })
+  </script>
 </body>
 </html>
