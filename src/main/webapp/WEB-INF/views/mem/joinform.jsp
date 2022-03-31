@@ -4,6 +4,9 @@
 <head>
 <title>회원가입 폼</title>
 </head>
+<style>
+	#input , #result{ display: none;}
+</style>
 <body>
 <h3>회원 가입을 환영합니다.</h3>
 <form action="insert" method="post" id="joinform">
@@ -16,7 +19,12 @@
 		<tr><td>birth</td><td><input name="birth" placeholder="yyyyMMdd"></td></tr>
 		<tr><td>address</td><td><input name="address" id="address">
 					<input type="button" id="addbtn" value="우편번호 검색" onclick="addPost()"></td></tr>
-	
+		
+		<tr><td>email</td><td><input name="email" id="email">
+		<div id="emailresult"></div>
+		<input type="button" id="mail_ck" value="메일 인증">
+		<div id="input"><input id="ck_num"> <input type="button" id="ck_b" value="인증 확인"></div>
+		<div id="result"></div>	</td></tr>	
 		<tr><td colspan="2"><input type="submit" value="가입"></td></tr>
 	</table>
 </form>
@@ -32,6 +40,7 @@ function addPost(){
     }).open();
 }    
 
+let num="";
 $(function(){
 	$("#id_check").click(function(){
 		let id = $("#id").val();
@@ -51,11 +60,44 @@ $(function(){
 		})
 	});//아이디 중복 확인 click
 	
+	$("#mail_ck").click(function(){
+			 let email = $("#email").val();
+			if(!email){
+					$("#result").css("display","block").html("메일 주소를 입력하세요");		
+					return false;
+				} 
+		 $.ajax({url:"/send",
+			 	data:"emailAddress="+email,
+				dataType:"json"}
+			).done(function(data){
+				if(eval(data[1])){
+					num = data[0];
+					alert("메일이 전송되었습니다. 인증번호를 입력하세요.")
+					$("#input,#result").css("display","block");
+				}
+			}); 
+		}) 
+		
+$("#ck_b").click(function(){
+			let ck_num = $("#ck_num").val();
+			if(ck_num == num){
+				$("#result").html("인증이 확인되었습니다.")
+				$("#result").append("<input type='hidden' id='ck' value='1'>");
+			}else{
+				$("#result").html("인증 실패했습니다. 다시 확인하세요.");
+			}
+		})
+	
 	$("#joinform").submit(function(){
 		if($("#id_ck").val() != 1){
 			$("#id_msg").html("아이디 중복 체크 하셔야 합니다.")
 			return false;
 		}
+		if($("#ck").val() != 1){
+			$("#result").html("이메일 인증 하셔야 합니다.")
+			return false;
+		}
+		
 		if(!$("#password").val()){
 			alert("비밀번호를 입력해야 합니다.");
 			return false;
