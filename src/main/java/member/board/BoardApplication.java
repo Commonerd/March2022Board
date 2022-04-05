@@ -16,4 +16,5 @@ public class BoardApplication {
 	public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
 		return new HiddenHttpMethodFilter();
 	}
+	
 }
